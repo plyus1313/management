@@ -48,7 +48,7 @@ class App extends Component {
   validateDataAdd(fields) {
     console.log(fields);
     if (fields.length !== 4) {
-      alert("Please, fill all fields");
+      alert("Input Error");
       return false;
     }
     var arrD = fields[0].split("-");
