@@ -13,8 +13,8 @@ class App extends Component {
     this.loadItems = this.loadItems.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.onButtonSubmit = this.onButtonSubmit.bind(this);
-    this.delItem = this.delItem.bind(this);
     this.totalSum = this.totalSum.bind(this);
+    this.onClearScreen = this.onClearScreen.bind(this);
   }
 
   componentDidMount() {
@@ -22,32 +22,37 @@ class App extends Component {
   }
 
   onButtonSubmit(event) {
-    let command = this.state.input;
-    command = command.replace(/([\s]{1,})/gm, " ");
-    const inputWords = command.split(" ");
+    var command = this.state.input;
+    const inputWords = command.match(/(\w|-|\.)+|"[^"]+"/g); // split tokens by spaces or quotes
+    if (inputWords == null) {
+      alert("Please, input valied command");
+      return false;
+    }
     const action = inputWords[0];
     const params = inputWords.slice(1, inputWords.length);
+
     if (action === "add") {
       this.addItem(params);
     } else if (action === "list") {
       this.listItems();
     } else if (action === "clear") {
-      this.delItem(params[0]);
+      this.delItem(params);
     } else if (action === "total") {
-      let currency = "PLN";
-      if (params && params[0]) currency = params[0];
-      this.totalSum(currency);
+      this.totalSum(params);
+    } else {
+      alert("Please, input valied command");
+      return false;
     }
   }
 
-  validateData(fields) {
+  validateDataAdd(fields) {
     console.log(fields);
     if (fields.length !== 4) {
       alert("Please, fill all fields");
       return false;
     }
     var arrD = fields[0].split("-");
-    var d = new Date(arrD[0], arrD[1]-=1, arrD[2]);
+    var d = new Date(arrD[0], (arrD[1] -= 1), arrD[2]);
 
     if (
       d.getFullYear() !== parseInt(arrD[0], 10) ||
@@ -74,7 +79,7 @@ class App extends Component {
 
   clearData(dateStr) {
     var arrC = dateStr.split("-");
-    var c = new Date(arrC[0], arrC[1]-=1, arrC[2]);
+    var c = new Date(arrC[0], (arrC[1] -= 1), arrC[2]);
     if (
       c.getFullYear() !== parseInt(arrC[0], 10) ||
       c.getMonth() !== parseInt(arrC[1], 10) ||
@@ -102,15 +107,18 @@ class App extends Component {
   }
 
   addItem(fields) {
+    if (this.validateDataAdd(fields) === false) {
+      return false;
+    }
+
+    var nameWOQuotes = fields[3].replace(/"/g, ""); // remove redundant quotes
     const item = {
       expense: fields[0],
       money: fields[1],
       currency: fields[2],
-      name: fields[3]
+      name: nameWOQuotes
     };
-    if (this.validateData(fields) === false) {
-      return false;
-    }
+
     console.log(item);
     fetch("http://localhost:3000/add", {
       method: "put",
@@ -125,23 +133,42 @@ class App extends Component {
     this.loadItems();
   }
 
-  delItem(dateStr) {
-    if (this.clearData(dateStr) === false) {
+  delItem(fields) {
+    if (fields.length !== 1) {
+      alert("Invalid input for clear");
       return false;
     }
-    fetch("http://localhost:3000/clear?expense=" + dateStr, {
-      method: "delete",
-      headers: { "Content-type": "application/json" }
-    }).then(res => {
+    if (this.clearData(fields[0]) === false) {
+      return false;
+    }
+    fetch(
+      "http://localhost:3000/clear?expense=" + fields[0],
+      {
+        method: "delete",
+        headers: { "Content-type": "application/json" }
+      }
+    ).then(res => {
       this.listItems();
     });
   }
 
-  totalSum(currency) {
-    fetch("http://localhost:3000/total?currency=" + currency, {
-      method: "get",
-      headers: { "Content-type": "application/json" }
-    })
+  totalSum(fields) {
+    var currency = "PLN";
+    if (fields.length > 1) {
+      alert("Invalid input for total sum");
+      return false;
+    }
+    if (fields[0]) {
+      currency = fields[0];
+    }
+
+    fetch(
+      "http://localhost:3000/total?currency=" + currency,
+      {
+        method: "get",
+        headers: { "Content-type": "application/json" }
+      }
+    )
       .then(res => res.json())
       .then(res => {
         let result = res["total"];
@@ -153,8 +180,16 @@ class App extends Component {
       });
   }
 
+  onClearScreen(event) {
+    this.setState({
+      input: "",
+      items: [],
+      result: ""
+    });
+  }
+
   render() {
-    let res_box = "";
+    var res_box = "";
     if (this.state.result) {
       if (this.state.result.type === "sum") {
         res_box = (
@@ -180,6 +215,12 @@ class App extends Component {
             onClick={this.onButtonSubmit}
           >
             Enter
+          </button>
+          <button
+            className="w-30 grow f4 link ph3 pv2 dib white bg-light-purple"
+            onClick={this.onClearScreen}
+          >
+            Clear Screen
           </button>
         </div>
         {res_box}
