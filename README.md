@@ -1,8 +1,9 @@
 Front - end
 
-Clone this repo
-Run npm install
-Run npm start
+- Clone this repo
+- Run npm install
+- Run npm start
+
 This App supports following commands:
 
 1) “Add” command is used to record purchasing in to database.
