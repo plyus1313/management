@@ -1,4 +1,4 @@
-Front - end
+# Front - end
 
 - Clone this repo
 - Run npm install
