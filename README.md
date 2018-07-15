@@ -5,9 +5,12 @@ Run npm install
 Run npm start
 This App supports following commands:
 
-1) “Add” command is used to record purchasing in to database. 
+1) “Add” command is used to record purchasing in to database.
+
   Format of “Add” command:
-- add [date] [amount] [currency] [article]
+  
+  add [date] [amount] [currency] [article]
+  
   [date] should be in the YYYY-MM-DD format only;
   [amount] is the cost of purchasing in decimal format with “.” (dot symbol) separator;
   [currency] is abbreviated currency name (USD, UAH, EUR, PLN etc.);
