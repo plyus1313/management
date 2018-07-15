@@ -17,27 +17,30 @@ This App supports following commands:
   - [currency] is abbreviated currency name (USD, UAH, EUR, PLN etc.);
   - [article] is purchased item (beer, potato, glass etc.).
 
+
 2) “List” command is used to display purchased from database.
 
   Format of “List” command:
   
   list
+  
 
 3) “Clear” command is used for delete all buying on specified date.
 
     Format of “Clear” command:
   
-    Clear [date]
+    clear [date]
   
-  - [date] should be in the YYYY-MM-DD format only;
+  - [date] should be in the YYYY-MM-DD format only.
+  
 
 4) “Total” command is used to display total amount of money for purchase.
 
     Format of “Total” command:
   
-    Total [currency]
+    total [currency]
   
-    - [currency] is abbreviated currency name (USD, UAH, EUR, PLN etc.).
+   - [currency] is abbreviated currency name (USD, UAH, EUR, PLN etc.).
 
 5) Button “Clear Screen” clear data from the webpage.
 
