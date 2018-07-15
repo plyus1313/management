@@ -39,8 +39,8 @@ This App supports following commands:
     Format of “Total” command:
   
     total [currency]
-  
-   - [currency] is abbreviated currency name (USD, UAH, EUR, PLN etc.).
+    
+  - [currency] is abbreviated currency name (USD, UAH, EUR, PLN etc.).
 
 5) Button “Clear Screen” clear data from the webpage.
 
