@@ -24,7 +24,7 @@ Front - end
 3) "Clear" command is used for delete all buying on specified date
      Format of "Clear" command:
      Clear [date]
-     [date] should be in the YYYY-MM-DD format only
+     bbb[date] should be in the YYYY-MM-DD format only
 
 4) "Total" command is used to display total amount of money for purchase.
      Format of "Total" command:
