@@ -45,8 +45,7 @@ class App extends Component {
     }
   }
 
-  validateDataAdd(fields) {
-    console.log(fields);
+  validateDataAdd(fields) {    
     if (fields.length !== 4) {
       alert("Input Error");
       return false;
@@ -100,8 +99,7 @@ class App extends Component {
       headers: { "Content-type": "application/json" }
     })
       .then(response => response.json())
-      .then(response => {
-        console.log(response);
+      .then(response => {        
         this.setState({ items: response });
       });
   }
@@ -119,7 +117,6 @@ class App extends Component {
       name: nameWOQuotes
     };
 
-    console.log(item);
     fetch("http://localhost:3000/add", {
       method: "put",
       headers: { "Content-type": "application/json" },
@@ -172,8 +169,7 @@ class App extends Component {
       .then(res => res.json())
       .then(res => {
         let result = res["total"];
-        result = (Math.round(100 * result) * 1.0) / 100.0;
-        console.log(result);
+        result = (Math.round(100 * result) * 1.0) / 100.0;        
         this.setState({
           result: { type: "sum", sum: result, currency: currency }
         });
